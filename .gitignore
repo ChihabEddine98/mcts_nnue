@@ -133,4 +133,6 @@ dmypy.json
 .idea
 venv
 .vscode
+*.nnue
+libnnueprobe.so
 
