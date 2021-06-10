@@ -8,9 +8,14 @@ from stockfish import Stockfish
 
 
 class State(object):
-    def __init__(self,board=None,parent=None):
-        self.board = board
-        self.parent = parent
+    def __init__(self,board=None):
+        if board is None:
+            self.board = chess.Board()
+        else:
+            self.board = board
+
+    def first_player(self):
+        return self.board.turn
 
     def make_action(self,action):
         self.board.push(chess.Move.from_uci(action))
