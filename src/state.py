@@ -1,4 +1,5 @@
 import numpy as  np
+from copy import deepcopy
 
 
 
@@ -18,8 +19,9 @@ class State(object):
         return self.board.turn
 
     def make_action(self,action):
-        self.board.push(chess.Move.from_uci(action))
-        return self
+        s = deepcopy(State(self.board))
+        s.board.push(chess.Move.from_uci(action))
+        return s
 
     def actions(self):
         return [str(move) for move in self.board.legal_moves]
