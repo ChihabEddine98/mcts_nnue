@@ -26,7 +26,7 @@ class State(object):
     def actions(self):
         return [str(move) for move in self.board.legal_moves]
 
-    def evaluation(self):
+    def value(self):
         sf = Stockfish('/opt/homebrew/bin/stockfish')
         sf.set_fen_position(self.board.fen())
         # If there is no visible mate yet !

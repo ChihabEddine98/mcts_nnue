@@ -1,5 +1,6 @@
 from time import time
 import operator
+from copy import deepcopy
 
 
 class Node(object):
@@ -7,9 +8,17 @@ class Node(object):
         self.state = state
         self.parent = parent
         self.is_terminal = state.is_terminal()
+        self.children = []
 
-    def make_action(self,node,action):
-        return Node(node.state.make_action(action), node)
+    def __repr__(self):
+        return self.state.board.fen()
+
+    def __str__(self):
+        return self.state.__str__()
+
+    def make_action(self,action):
+        return Node(self.state.make_action(action),self)
+
 
 
 class UBFMS(object):
@@ -19,7 +28,7 @@ class UBFMS(object):
         '''
             T : { s1: e1 , s2: e2 , s3: e3 .... }
         '''
-        self.T = {}
+        self.T = []
         # it will have this structure
         '''
             v(s,a) : { (s1,a1): v(s1,a1) , (s2,a2): v(s2,a2) , (s3,a3): v(s3,a3) .... }
@@ -27,41 +36,61 @@ class UBFMS(object):
         self.v = {}
 
     # Execute the UBFMS search from root node
-    def search(self,tho=2000):
-        return self.ub_minimax(self.root,tho)
+    def search(self,tho=9000):
+       self.ub_minimax(self.root,tho)
     # unbounded minimax search starting from state #state
     def ub_minimax(self,node,tho):
         t = time()
+
         while (time()- t < tho) :
-            self.ub_minimax_iter(node)
-        return self.best_action(node)
+            value = self.ub_minimax_iter(node)
+            #print(f'{self.v},{value}')
+
+
+
+        a_b = self.best_action(node)
+        node = node.make_action(a_b)
+
+        return self.best_action(node),node
 
     # unbounded minimax search iteration on state #state
     def ub_minimax_iter(self, node):
-        if node.is_terminal:
-            return node.state.evaluation()
 
+        if node.is_terminal:
+            return node.state.value()
+        '''
         if node in self.T :
             return self.T[node]
+        '''
 
         if node not in self.T:
-            self.T[node] = node.state.evaluation()
+            self.T.append(node)
             for a in node.state.actions():
-                self.v[(node,a)] = node.make_action(node,a).state.evaluation()
+                #print(f'Before : ')
+                #print(node.state)
+                child = node.make_action(a)
+                node.children.append(child)
+                self.v[(repr(node),a)] = node.make_action(a).state.value()
+                #print(f'After : {self.v} ')
+                #print(node.make_action(a).state)
+
+
         else:
+            print(f' Childreeen ')
+            for child in node.children :
+                print(child)
+            print(f' ----------------------------------')
+            print(f'Before , {node.state.first_player()} :  {node.state}')
             a_b = self.best_action(node)
             #new_node = Node(node.state.make_action(a_b), node)
-            self.v[(node, a_b)] = self.ub_minimax_iter(node.make_action(node,a_b))
+            self.v = {}
+            node = node.make_action(a_b)
+            print(f'After {a_b} , {node.state.first_player()} : {node.state}')
+
+            self.v[(repr(node), a_b)] = self.ub_minimax_iter(node)
 
         a_b = self.best_action(node)
-
-        print(self.v)
-        print(a_b, node.state.first_player())
-        vn = self.v[(node,a_b)]
-
-        self.v = {}
-
-        return vn
+        return self.v[(repr(node),a_b)]
 
     # Get the best available action from current state #state for the current player (white,black)
     def best_action(self, node):

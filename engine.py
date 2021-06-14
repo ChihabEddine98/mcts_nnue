@@ -1,6 +1,8 @@
 import chess
 import chess.engine
 from stockfish import Stockfish
+
+from src.mcts import MCTS
 from src.state import State
 from src.ubfms import UBFMS
 
@@ -14,11 +16,12 @@ if __name__ == '__main__':
     state = State(board)
     #print(state.evaluation())
 
-    board = chess.Board()
+    board = chess.Board('r1bqk2r/pppp1ppp/2n5/1Bb1p3/8/1PN2N2/PBPP1PPP/R2Q1RK1 b kq - 0 7')
     s = State(board)
     ubfm = UBFMS(s)
+    mcts = MCTS(root=s,iteration_limit=50)
 
-    print(ubfm.search())
+    print(mcts.search())
 
 
 
