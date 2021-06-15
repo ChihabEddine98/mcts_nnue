@@ -6,6 +6,8 @@ Monte-Carlo Tree Search applied on NNUE (Stockfish Neural Net)
 - [x] Call NNUE library
 - [x] Test NNUE evaluation
 - [x] Implement UBFM-Safe-Minimax : https://www.lamsade.dauphine.fr/~cazenave/papers/MinimaxStrikesBack.pdf
+- [x] Implement MCTS
+- [ ] Quiscence Search
 - [ ] Optimize DRL model 
 - [ ] Implement MCTS search
 - [ ] Optimize DRL model 
