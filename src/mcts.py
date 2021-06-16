@@ -31,7 +31,7 @@ class Node(object):
     def make_action(self,action):
         return Node(self.state.make_action(action),self)
 
-class MCTS():
+class MCTS(object):
     def __init__(self,root, time_limit=None, iteration_limit=None, exploration_constant= 1 / np.sqrt(2),
                  rollout_policy=nnue_policy):
         if time_limit != None:
@@ -58,23 +58,23 @@ class MCTS():
         if self.limit_type == 'time':
             time_limit = time() + self.time_limit / 1000
             while time() < time_limit:
-                self.executeRound()
+                self.mcts_iteration()
         else:
             for i in range(self.search_limit):
-                self.executeRound()
+                self.mcts_iteration()
 
-        best_child = self.getBestChild(self.root, 0)
+        best_child = self.best_action(self.root, 0)
         return self.getAction(self.root, best_child), -nnue_policy(best_child.state)
 
-    def executeRound(self):
-        node = self.selectNode(self.root)
+    def mcts_iteration(self):
+        node = self.select(self.root)
         reward = self.rollout(node.state)
         self.backpropogate(node, reward)
 
-    def selectNode(self, node):
+    def select(self, node):
         while not node.is_terminal:
             if node.is_fully_expanded:
-                node = self.getBestChild(node, self.exploration_constant)
+                node = self.best_action(node, self.exploration_constant)
             else:
                 return self.expand(node)
         return node
@@ -92,14 +92,15 @@ class MCTS():
         raise Exception("Should never reach here")
 
     def backpropogate(self, node, reward):
-        turn = 1
+        turn = -1
         while node is not None:
             node.num_visits += 1
             node.total_reward += reward * turn
             node = node.parent
             turn *= -1
 
-    def getBestChild(self, node, exploration_value):
+    def best_action(self, node, exploration_value):
+        r = random.Random(500)
         best_value = float("-inf")
         best_nodes = []
         for child in node.children.values():
@@ -111,7 +112,9 @@ class MCTS():
                 best_nodes = [child]
             elif node_value == best_value:
                 best_nodes.append(child)
-        return random.choice(best_nodes)
+            [print(n) for n in best_nodes]
+            print(best_nodes)
+        return r.choice(best_nodes)
 
     def getAction(self, root, best_child):
         for action, node in root.children.items():
