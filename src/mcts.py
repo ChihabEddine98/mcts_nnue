@@ -32,16 +32,16 @@ class Node(object):
         return Node(self.state.make_action(action),self)
 
 class MCTS(object):
-    def __init__(self,root, time_limit=None, iteration_limit=None, exploration_constant= 1 / np.sqrt(2),
+    def __init__(self,root, time_limit=0, iteration_limit=0, exploration_constant= 1 / np.sqrt(2),
                  rollout_policy=nnue_policy):
-        if time_limit != None:
-            if iteration_limit != None:
+        if time_limit :
+            if iteration_limit:
                 raise ValueError("Cannot have both a time limit and an iteration limit")
             # time taken for each MCTS search in milliseconds
             self.time_limit = time_limit
             self.limit_type = 'time'
         else:
-            if iteration_limit is None:
+            if not iteration_limit:
                 raise ValueError("Must have either a time limit or an iteration limit")
             # number of iterations of the search
             if iteration_limit < 1:
