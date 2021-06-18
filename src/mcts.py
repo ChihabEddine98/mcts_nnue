@@ -58,15 +58,15 @@ class MCTS(object):
         if self.limit_type == 'time':
             time_limit = time() + self.time_limit / 1000
             while time() < time_limit:
-                self.mcts_iteration()
+                self.mcts_iter()
         else:
             for i in range(self.search_limit):
-                self.mcts_iteration()
+                self.mcts_iter()
 
         best_child = self.best_action(self.root, 0)
-        return self.getAction(self.root, best_child), -nnue_policy(best_child.state)
+        return self.get_action(self.root, best_child), -nnue_policy(best_child.state)
 
-    def mcts_iteration(self):
+    def mcts_iter(self):
         node = self.select(self.root)
         reward = self.rollout(node.state)
         self.backpropogate(node, reward)
@@ -79,11 +79,40 @@ class MCTS(object):
                 return self.expand(node)
         return node
 
+    def best_action(self, node, explore_val):
+        r = random.Random(500)
+        best_val = float("-inf")
+        best_nodes = []
+        for child in node.children.values():
+            node_val = child.total_reward / child.num_visits + explore_val * np.sqrt(
+                2 * np.log(node.num_visits) / child.num_visits)
+
+            if node_val >= best_val :
+                best_val = node_val
+                best_nodes.append(child)
+
+            # TODO----------------------
+            # Here need to check if appending items to best nodes is working or need to change
+            # it to another approach in comment below
+            '''
+            if node_val > best_val:
+                best_val = node_val
+                best_nodes = [child]
+            elif node_val == best_val:
+                best_nodes.append(child)
+            '''
+            [print(n) for n in best_nodes]
+            print(best_nodes)
+        return r.choice(best_nodes)
+
     def expand(self, node):
         actions = node.state.actions()
         for action in actions:
             if action not in node.children:
-                new_node = Node(node.state.make_action(action), node)
+                # TODO -----------
+                # Here need to check if node's making action or go back to state method
+                #new_node = Node(node.state.make_action(action), node)
+                new_node = node.make_action(action)
                 node.children[action] = new_node
                 if len(actions) == len(node.children):
                     node.is_fully_expanded = True
@@ -99,24 +128,9 @@ class MCTS(object):
             node = node.parent
             turn *= -1
 
-    def best_action(self, node, exploration_value):
-        r = random.Random(500)
-        best_value = float("-inf")
-        best_nodes = []
-        for child in node.children.values():
-            node_value = child.total_reward / child.num_visits + exploration_value * np.sqrt(
-                2 * np.log(node.num_visits) / child.num_visits)
 
-            if node_value > best_value:
-                best_value = node_value
-                best_nodes = [child]
-            elif node_value == best_value:
-                best_nodes.append(child)
-            [print(n) for n in best_nodes]
-            print(best_nodes)
-        return r.choice(best_nodes)
 
-    def getAction(self, root, best_child):
+    def get_action(self, root, best_child):
         for action, node in root.children.items():
             if node is best_child:
                 return action

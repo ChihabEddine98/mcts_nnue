@@ -16,7 +16,8 @@ if __name__ == '__main__':
     state = State(board)
     #print(state.evaluation())
 
-    board = chess.Board('r1bqk2r/pppp1ppp/2n5/1Bb1p3/8/1PN2N2/PBPP1PPP/R2Q1RK1 b kq - 0 7')
+    c = 'r1bqk2r/pppp1ppp/2n5/1Bb1p3/8/1PN2N2/PBPP1PPP/R2Q1RK1 b kq - 0 7'
+    board = chess.Board('1rbq1rk1/p1N2p1p/2pp2p1/8/3P2Q1/1P6/PBP2KPP/R3R3 b - -')
     s = State(board)
     ubfm = UBFMS(s)
     mcts = MCTS(root=s,iteration_limit=50)
