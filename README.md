@@ -1,5 +1,5 @@
 # mcts_nnue
-Monte-Carlo Tree Search applied on NNUE (Stockfish Neural Net) 
+Monte-Carlo Tree Search & UBFM applied on NNUE (Stockfish Neural Net) 
 
 # TODO
 - [x] Test Chess-python library for representation
