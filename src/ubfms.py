@@ -76,9 +76,6 @@ class UBFMS(object):
 
 
         else:
-            print(f' Childreeen ')
-            for child in node.children :
-                print(child)
             print(f' ----------------------------------')
             print(f'Before , {node.state.first_player()} :  {node.state}')
             a_b = self.best_action(node)

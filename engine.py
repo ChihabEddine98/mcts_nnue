@@ -22,7 +22,7 @@ if __name__ == '__main__':
     ubfm = UBFMS(s)
     mcts = MCTS(root=s,iteration_limit=50)
 
-    print(mcts.search())
+    print(ubfm.search())
 
 
 

@@ -21,6 +21,11 @@ class Node(object):
         self.num_visits = 0
         self.total_reward = 0
 
+    def uct(self,parent,explore_val):
+        return self.total_reward / self.num_visits + explore_val * np.sqrt(
+                2 * np.log(parent.num_visits) / self.num_visits)
+
+
 
     def __repr__(self):
         return self.state.board.fen()
@@ -84,8 +89,9 @@ class MCTS(object):
         best_val = float("-inf")
         best_nodes = []
         for child in node.children.values():
-            node_val = child.total_reward / child.num_visits + explore_val * np.sqrt(
-                2 * np.log(node.num_visits) / child.num_visits)
+            node_val = child.uct(node,explore_val)
+
+            print(f'({child},{node_val})')
 
             if node_val >= best_val :
                 best_val = node_val
@@ -100,9 +106,10 @@ class MCTS(object):
                 best_nodes = [child]
             elif node_val == best_val:
                 best_nodes.append(child)
-            '''
+            
             [print(n) for n in best_nodes]
             print(best_nodes)
+            '''
         return r.choice(best_nodes)
 
     def expand(self, node):
