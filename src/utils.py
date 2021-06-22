@@ -54,15 +54,15 @@ def get_dataset(num_samples=None):
     # If we exceed maximal number of states we need then in this case
     # We can stop serializing more data
     if num_samples is not None and len(X) > num_samples:
-      return np.array(X),np.array(Y)
+      return np.array(X),np.array(y)
 
     # When we finish to push all moves of game $(i) we can pass to game $(i+1)
     gn += 1
 
-  return np.array(X), np.array(Y)
+  return np.array(X), np.array(y)
 
 if __name__ == "__main__":
-  X,Y = get_dataset(1e4)
-  print(f'({np.sum(Y==-1)})')
-  np.savez(os.path.join('..','data','dataset_120K.npz'), X, Y)
+  X,y = get_dataset(1e4)
+  print(f'({np.sum(y==-1)})')
+  np.savez(os.path.join('..','data','dataset_120K.npz'), X, y)
 

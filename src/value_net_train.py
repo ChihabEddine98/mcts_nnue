@@ -1,3 +1,5 @@
+import os.path
+
 import numpy as np
 import torch
 import torch.nn as nn
@@ -5,10 +7,12 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset
 from torch import optim
 
+import matplotlib.pyplot as plt
+
 
 class ChessValueDataset(Dataset):
     def __init__(self):
-        dat = np.load("data/120K_games.pgn")
+        dat = np.load(os.path.join('..','data','dataset_120K.npz'))
         self.X = dat['arr_0']
         self.Y = dat['arr_1']
         print("loaded", self.X.shape, self.Y.shape)
@@ -65,11 +69,13 @@ class Net(nn.Module):
         x = self.last(x)
 
         # value output
-        return F.tanh(x)
+        return torch.tanh(x)
+
+
 
 
 if __name__ == "__main__":
-    device = "cuda"
+    device = "cpu"
 
     chess_dataset = ChessValueDataset()
     train_loader = torch.utils.data.DataLoader(chess_dataset, batch_size=256, shuffle=True)
@@ -82,7 +88,8 @@ if __name__ == "__main__":
 
     model.train()
 
-    for epoch in range(100):
+    losses = []
+    for epoch in range(20):
         all_loss = 0
         num_loss = 0
         for batch_idx, (data, target) in enumerate(train_loader):
@@ -103,5 +110,9 @@ if __name__ == "__main__":
             all_loss += loss.item()
             num_loss += 1
 
+        losses.append(all_loss / num_loss )
         print("%3d: %f" % (epoch, all_loss / num_loss))
-        torch.save(model.state_dict(), "nets/value.pth")
+        torch.save(model.state_dict(), os.path.join('..','models','value.pth'))
+
+        plt.plot(losses)
+        plt.show()

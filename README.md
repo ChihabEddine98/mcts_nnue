@@ -15,4 +15,6 @@ Monte-Carlo Tree Search & UBFM applied on NNUE (Stockfish Neural Net)
 - [ ] Try to implement this previous searches approachs in C++ (more optimization) 
 
 
-
+# Training Value Neural Network 
+## Loss function per epochs 
+![img.png](models/img.png)
