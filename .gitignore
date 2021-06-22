@@ -135,4 +135,6 @@ venv
 .vscode
 *.nnue
 libnnueprobe.so
+*.pgn
+*.npz
 

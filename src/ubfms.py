@@ -36,7 +36,7 @@ class UBFMS(object):
         self.v = {}
 
     # Execute the UBFMS search from root node
-    def search(self,tho=9000):
+    def search(self,tho=1000):
        self.ub_minimax(self.root,tho)
     # unbounded minimax search starting from state #state
     def ub_minimax(self,node,tho):

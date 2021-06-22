@@ -1,10 +1,12 @@
-import chess
+
+import chess.pgn
 import chess.engine
 from stockfish import Stockfish
 
 from src.mcts import MCTS
 from src.state import State
 from src.ubfms import UBFMS
+from src.config import value_model_config as vmc
 
 if __name__ == '__main__':
     sf = Stockfish('/opt/homebrew/bin/stockfish')
@@ -22,7 +24,16 @@ if __name__ == '__main__':
     ubfm = UBFMS(s)
     mcts = MCTS(root=s,iteration_limit=50)
 
-    print(ubfm.search())
+    with open('data/120K_games.pgn') as pgn:
+        print('----------------------')
+        for _ in range(vmc['NB_GAMES']):
+            game = chess.pgn.read_game(pgn)
+            print(game)
+            print('----------------------')
+
+
+
+    #print(ubfm.search())
 
 
 
