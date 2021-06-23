@@ -19,10 +19,14 @@ class State(object):
     def first_player(self):
         return self.board.turn
 
-    def make_action(self,action):
-        s = deepcopy(State(self.board))
-        s.board.push(chess.Move.from_uci(action))
-        return s
+    def do_action(self, action):
+        # s = deepcopy(State(self.board))
+        self.board.push(chess.Move.from_uci(action))
+        return self
+
+    def undo_action(self):
+        self.board.pop()
+        return self
 
     def actions(self):
         return [str(move) for move in self.board.legal_moves]

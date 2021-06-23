@@ -35,7 +35,7 @@ class Node(object):
         return self.state.__str__()
 
     def make_action(self,action):
-        return Node(self.state.make_action(action),self)
+        return Node(self.state.do_action(action), self)
 
 class MCTS(object):
     def __init__(self,root, time_limit=0, iteration_limit=0, exploration_constant= 1 / np.sqrt(2),
@@ -120,7 +120,7 @@ class MCTS(object):
                 # TODO -----------
                 # Here need to check if node's making action or go back to state method
                 #new_node = Node(node.state.make_action(action), node)
-                new_node = node.make_action(action)
+                new_node = node.do_action(action)
                 node.children[action] = new_node
                 if len(actions) == len(node.children):
                     node.is_fully_expanded = True

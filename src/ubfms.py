@@ -16,8 +16,11 @@ class Node(object):
     def __str__(self):
         return self.state.__str__()
 
-    def make_action(self,action):
-        return Node(self.state.make_action(action),self)
+    def do_action(self, action):
+        return Node(self.state.do_action(action), self)
+
+    def undo_action(self):
+        return Node(self.state.undo_action(), self)
 
 
 
@@ -49,7 +52,7 @@ class UBFMS(object):
 
 
         a_b = self.best_action(node)
-        node = node.make_action(a_b)
+        node = node.do_action(a_b)
 
         return self.best_action(node),node
 
@@ -63,19 +66,18 @@ class UBFMS(object):
         if node in self.T :
             return self.T[node]
         '''
-        node_save = node
         if node not in self.T:
             self.T.append(node)
 
             for a in node.state.actions():
                 #print(f'Before : ')
                 #print(node.state)
-                child = node.make_action(a)
-                node_save.children.append(child)
-                self.v[(repr(node_save),a)] = child.state.value()
+                child = node.do_action(a)
+                node.undo_action()
+                node.children.append(child)
+                self.v[(repr(node),a)] = child.state.value()
                 #print(f'After : {self.v} ')
                 #print(node.make_action(a).state)
-            node = node_save
 
 
         else:
@@ -84,7 +86,7 @@ class UBFMS(object):
             a_b = self.best_action(node)
             #new_node = Node(node.state.make_action(a_b), node)
             self.v = {}
-            node = node.make_action(a_b)
+            node = node.do_action(a_b)
             #print(f'After {a_b} , {node.state.first_player()} : {node}')
 
             self.v[(repr(node), a_b)] = self.ub_minimax_iter(depth-1,node)
