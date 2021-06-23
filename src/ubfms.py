@@ -37,14 +37,14 @@ class UBFMS(object):
 
     # Execute the UBFMS search from root node
     def search(self,tho=1000):
-       self.ub_minimax(self.root,tho)
+       return self.ub_minimax(2,self.root,tho)
     # unbounded minimax search starting from state #state
-    def ub_minimax(self,node,tho):
+    def ub_minimax(self,depth,node,tho):
         t = time()
 
         while (time()- t < tho) :
-            value = self.ub_minimax_iter(node)
-            print(f'({value})')
+            value = self.ub_minimax_iter(depth,node)
+            #print(f'({value})')
 
 
 
@@ -54,26 +54,28 @@ class UBFMS(object):
         return self.best_action(node),node
 
     # unbounded minimax search iteration on state #state
-    def ub_minimax_iter(self, node):
+    def ub_minimax_iter(self,depth, node):
 
         print(f' Start : \n {node}')
-        if node.is_terminal:
+        if node.is_terminal or depth == 0:
             return node.state.value()
         '''
         if node in self.T :
             return self.T[node]
         '''
-
+        node_save = node
         if node not in self.T:
             self.T.append(node)
+
             for a in node.state.actions():
                 #print(f'Before : ')
                 #print(node.state)
                 child = node.make_action(a)
-                node.children.append(child)
-                self.v[(repr(node),a)] = child.state.value()
+                node_save.children.append(child)
+                self.v[(repr(node_save),a)] = child.state.value()
                 #print(f'After : {self.v} ')
                 #print(node.make_action(a).state)
+            node = node_save
 
 
         else:
@@ -85,7 +87,7 @@ class UBFMS(object):
             node = node.make_action(a_b)
             #print(f'After {a_b} , {node.state.first_player()} : {node}')
 
-            self.v[(repr(node), a_b)] = self.ub_minimax_iter(node)
+            self.v[(repr(node), a_b)] = self.ub_minimax_iter(depth-1,node)
 
         a_b = self.best_action(node)
         return self.v[(repr(node),a_b)]
