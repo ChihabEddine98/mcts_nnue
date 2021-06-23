@@ -44,7 +44,7 @@ class UBFMS(object):
 
         while (time()- t < tho) :
             value = self.ub_minimax_iter(node)
-            #print(f'{self.v},{value}')
+            print(f'({value})')
 
 
 
@@ -56,6 +56,7 @@ class UBFMS(object):
     # unbounded minimax search iteration on state #state
     def ub_minimax_iter(self, node):
 
+        print(f' Start : \n {node}')
         if node.is_terminal:
             return node.state.value()
         '''
@@ -70,19 +71,19 @@ class UBFMS(object):
                 #print(node.state)
                 child = node.make_action(a)
                 node.children.append(child)
-                self.v[(repr(node),a)] = node.make_action(a).state.value()
+                self.v[(repr(node),a)] = child.state.value()
                 #print(f'After : {self.v} ')
                 #print(node.make_action(a).state)
 
 
         else:
             print(f' ----------------------------------')
-            print(f'Before , {node.state.first_player()} :  {node.state}')
+            #print(f'Before , {node.state.first_player()} :  {node}')
             a_b = self.best_action(node)
             #new_node = Node(node.state.make_action(a_b), node)
             self.v = {}
             node = node.make_action(a_b)
-            print(f'After {a_b} , {node.state.first_player()} : {node.state}')
+            #print(f'After {a_b} , {node.state.first_player()} : {node}')
 
             self.v[(repr(node), a_b)] = self.ub_minimax_iter(node)
 

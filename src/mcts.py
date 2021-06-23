@@ -9,7 +9,8 @@ import random
 def nnue_policy(state):
     return state.value()
 
-
+def custom_policy(state):
+    return state.value_nn()
 
 class Node(object):
     def __init__(self,state,parent):

@@ -2,16 +2,14 @@ import os
 import torch
 
 from src.value_net_train import Net
-from src.state import State
 
-import chess
 
 
 
 
 class Valuator(object):
     def __init__(self):
-        vals = torch.load(os.path.join('..','models','value.pth'),
+        vals = torch.load(os.path.join(os.getcwd(),'models','value.pth'),
                           map_location=lambda storage,
                           loc: storage)
         self.model = Net()
@@ -22,7 +20,7 @@ class Valuator(object):
         output = self.model(torch.tensor(ser).float())
         return float(output.data[0][0])
 
-
+'''
 if __name__ == '__main__':
     v = Valuator()
 
@@ -31,3 +29,4 @@ if __name__ == '__main__':
     print(f' Current State \n {s}')
     print(f' Custom Valuator : {v(s)} ')
     print(f' NNUE Valuator : {s.value()} ')
+'''

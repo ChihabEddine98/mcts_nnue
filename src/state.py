@@ -6,6 +6,7 @@ from copy import deepcopy
 import chess
 from stockfish import Stockfish
 
+from src.value_net_test import Valuator
 
 
 class State(object):
@@ -35,6 +36,11 @@ class State(object):
         # In case we have mate visible
         else:
             return np.sign(sf.get_evaluation()['value'])*float('inf')
+
+    def value_nn(self):
+        v = Valuator()
+        return v(self)
+
 
     # Get whether the current game state is in the terminal state (win/draw/loss) or not
     def is_terminal(self):

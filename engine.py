@@ -3,7 +3,7 @@ import chess.pgn
 import chess.engine
 from stockfish import Stockfish
 
-from src.mcts import MCTS
+from src.mcts import MCTS, custom_policy, nnue_policy
 from src.state import State
 from src.ubfms import UBFMS
 from src.config import value_model_config as vmc
@@ -19,21 +19,12 @@ if __name__ == '__main__':
     #print(state.evaluation())
 
     c = 'r1bqk2r/pppp1ppp/2n5/1Bb1p3/8/1PN2N2/PBPP1PPP/R2Q1RK1 b kq - 0 7'
-    board = chess.Board('1rbq1rk1/p1N2p1p/2pp2p1/8/3P2Q1/1P6/PBP2KPP/R3R3 b - -')
-    s = State(board)
+    board = chess.Board('1rbq1rk1/p1N2p1p/2pp2p1/8/3P2Q1/1P6/PBP2KPP/R3R3 b - - 0 1')
+    s = State()
     ubfm = UBFMS(s)
-    mcts = MCTS(root=s,iteration_limit=50)
+    mcts = MCTS(root=s,iteration_limit=50,rollout_policy=custom_policy)
 
-    with open('data/120K_games.pgn') as pgn:
-        print('----------------------')
-        for _ in range(vmc['NB_GAMES']):
-            game = chess.pgn.read_game(pgn)
-            print(game)
-            print('----------------------')
-
-
-
-    #print(ubfm.search())
+    print(ubfm.search())
 
 
 
