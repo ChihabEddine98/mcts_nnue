@@ -69,13 +69,14 @@ class UBFMS(object):
         if node not in self.T:
             self.T.append(node)
 
-            for a in node.state.actions():
+            for i,a in enumerate(node.state.actions()):
                 #print(f'Before : ')
                 #print(node.state)
                 child = node.do_action(a)
-                node.undo_action()
+                print(f' Child #{i+1} : {child} ')
                 node.children.append(child)
                 self.v[(repr(node),a)] = child.state.value()
+                node.undo_action()
                 #print(f'After : {self.v} ')
                 #print(node.make_action(a).state)
 
@@ -97,8 +98,14 @@ class UBFMS(object):
     # Get the best available action from current state #state for the current player (white,black)
     def best_action(self, node):
         if node.state.first_player():
+            print(f' MAX : {self.v}')
+            a = max(self.v.items(), key=operator.itemgetter(1))[0][1]
+            print(f' BEST MAX  , {a} {self.v[(repr(node),a)]}')
             return max(self.v.items(), key=operator.itemgetter(1))[0][1]
         else:
+            print(f' MIN : {self.v}')
+            a = min(self.v.items(), key=operator.itemgetter(1))[0][1]
+            print(f' BEST min : {self.v}')
             return min(self.v.items(), key=operator.itemgetter(1))[0][1]
 
 
