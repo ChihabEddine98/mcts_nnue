@@ -100,12 +100,12 @@ class UBFMS(object):
         if node.state.first_player():
             print(f' MAX : {self.v}')
             a = max(self.v.items(), key=operator.itemgetter(1))[0][1]
-            print(f' BEST MAX  , {a} {self.v[(repr(node),a)]}')
+            print(f' BEST MAX  , {a} : {self.v[(repr(node),a)]}')
             return max(self.v.items(), key=operator.itemgetter(1))[0][1]
         else:
             print(f' MIN : {self.v}')
             a = min(self.v.items(), key=operator.itemgetter(1))[0][1]
-            print(f' BEST min : {self.v}')
+            print(f' BEST MIN , {a} :  {self.v[(repr(node),a)]}')
             return min(self.v.items(), key=operator.itemgetter(1))[0][1]
 
 
