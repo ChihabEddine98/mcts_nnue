@@ -69,7 +69,7 @@ class Net(nn.Module):
         x = self.last(x)
 
         # value output
-        return torch.softmax(x)
+        return torch.tanh(x)
 
 
 
