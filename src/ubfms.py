@@ -70,7 +70,7 @@ class UBFMS(object):
     def ub_minimax_iter(self,depth, node):
 
         if node.is_terminal or depth == 0:
-            return node.state.value_nn()
+            return node.state.value()
         '''
         if node in self.T :
             return self.T[node]
@@ -89,7 +89,7 @@ class UBFMS(object):
                 child = node.do_action(a)
                 print(f' Child #{i+1} : {child} ')
                 node.children.append(child)
-                self.v[a] = child.state.value_nn()
+                self.v[a] = child.state.value()
                 node.undo_action()
                 #print(f'After : {self.v} ')
                 #print(node.make_action(a).state)
