@@ -36,6 +36,11 @@ class UBFMS(object):
         '''
             v(s,a) : { (s1,a1): v(s1,a1) , (s2,a2): v(s2,a2) , (s3,a3): v(s3,a3) .... }
         '''
+
+        '''
+            We will use this representation for the function v : 
+            v(s,a) : { a1 : v(s,a1) , a2 : v(s,a2) , ... }
+        '''
         self.v = {}
 
     # Execute the UBFMS search from root node
@@ -59,15 +64,19 @@ class UBFMS(object):
     # unbounded minimax search iteration on state #state
     def ub_minimax_iter(self,depth, node):
 
-        print(f' Start : \n {node}')
         if node.is_terminal or depth == 0:
-            return node.state.value()
+            return node.state.value_nn()
         '''
         if node in self.T :
             return self.T[node]
         '''
-        if node not in self.T:
+
+        print(f' Node : \n {node}')
+        print(f' T: {self.T}')
+
+        if repr(node) not in self.T:
             self.T.append(node)
+            self.v = {}
 
             for i,a in enumerate(node.state.actions()):
                 #print(f'Before : ')
@@ -75,7 +84,7 @@ class UBFMS(object):
                 child = node.do_action(a)
                 print(f' Child #{i+1} : {child} ')
                 node.children.append(child)
-                self.v[(repr(node),a)] = child.state.value()
+                self.v[a] = child.state.value_nn()
                 node.undo_action()
                 #print(f'After : {self.v} ')
                 #print(node.make_action(a).state)
@@ -84,29 +93,30 @@ class UBFMS(object):
         else:
             print(f' ----------------------------------')
             #print(f'Before , {node.state.first_player()} :  {node}')
+            print(f' Heree #1 : {node}')
             a_b = self.best_action(node)
+            print(f' Heree #2 : {node}')
             #new_node = Node(node.state.make_action(a_b), node)
-            self.v = {}
             node = node.do_action(a_b)
             #print(f'After {a_b} , {node.state.first_player()} : {node}')
-
-            self.v[(repr(node), a_b)] = self.ub_minimax_iter(depth-1,node)
+            self.v[a_b] = self.ub_minimax_iter(depth-1,node)
 
         a_b = self.best_action(node)
-        return self.v[(repr(node),a_b)]
+        return self.v[a_b]
 
     # Get the best available action from current state #state for the current player (white,black)
     def best_action(self, node):
         if node.state.first_player():
             print(f' MAX : {self.v}')
-            a = max(self.v.items(), key=operator.itemgetter(1))[0][1]
-            print(f' BEST MAX  , {a} : {self.v[(repr(node),a)]}')
-            return max(self.v.items(), key=operator.itemgetter(1))[0][1]
+            a = max(self.v, key=self.v.get)
+            node = node.do_action(a)
+            print(f' BEST MAX  , {a} : {self.v[a]}')
+            return a
         else:
             print(f' MIN : {self.v}')
-            a = min(self.v.items(), key=operator.itemgetter(1))[0][1]
-            print(f' BEST MIN , {a} :  {self.v[(repr(node),a)]}')
-            return min(self.v.items(), key=operator.itemgetter(1))[0][1]
-
+            a = min(self.v, key=self.v.get)
+            node = node.do_action(a)
+            print(f' BEST MIN , {a} :  {self.v[a]}')
+            return a
 
 
