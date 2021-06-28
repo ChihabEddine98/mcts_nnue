@@ -24,7 +24,7 @@ if __name__ == '__main__':
     ubfm = UBFMS(s)
     mcts = MCTS(root=s,iteration_limit=50,rollout_policy=custom_policy)
 
-    print(ubfm.search())
+    print(mcts.search())
 
 
 

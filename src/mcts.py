@@ -34,7 +34,7 @@ class Node(object):
     def __str__(self):
         return self.state.__str__()
 
-    def make_action(self,action):
+    def do_action(self,action):
         return Node(self.state.do_action(action), self)
 
 class MCTS(object):
@@ -70,7 +70,7 @@ class MCTS(object):
                 self.mcts_iter()
 
         best_child = self.best_action(self.root, 0)
-        return self.get_action(self.root, best_child), -nnue_policy(best_child.state)
+        return self.get_action(self.root, best_child), -self.rollout(best_child.state)
 
     def mcts_iter(self):
         node = self.select(self.root)
@@ -92,7 +92,7 @@ class MCTS(object):
         for child in node.children.values():
             node_val = child.uct(node,explore_val)
 
-            print(f'({child},{node_val})')
+            #print(f'({child},{node_val})')
 
             if node_val >= best_val :
                 best_val = node_val
@@ -111,6 +111,8 @@ class MCTS(object):
             [print(n) for n in best_nodes]
             print(best_nodes)
             '''
+        n = r.choice(best_nodes)
+        print(f' Best Node : {n}')
         return r.choice(best_nodes)
 
     def expand(self, node):
