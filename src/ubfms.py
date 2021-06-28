@@ -33,9 +33,14 @@ class UBFMS(object):
         '''
         self.T = []
         # it will have this structure
+        # This struct is useless because the state s doesnt change
+        # s1 = s2 = ... = sn = s so there is no need
         '''
             v(s,a) : { (s1,a1): v(s1,a1) , (s2,a2): v(s2,a2) , (s3,a3): v(s3,a3) .... }
         '''
+
+        # This structure is more optimized because states
+        # are not so important as their evaluation is
 
         '''
             We will use this representation for the function v : 
