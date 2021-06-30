@@ -111,7 +111,8 @@ class UBFMS(object):
         return self.v[a_b]
     # TODO SOS ----- wrong push action for BLACK (f1d3)
     #        Verify self.v dict if there is doubles
-    #       it can be the issue
+    #        it can be the issue
+    #       Delete the old version of self.v ( values function )
     # Get the best available action from current state #state for the current player (white,black)
     def best_action(self, node):
         if node.state.first_player():
