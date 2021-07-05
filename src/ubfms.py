@@ -25,7 +25,7 @@ class Node(object):
 
 
 class UBFMS(object):
-    def __init__(self,root):
+    def __init__(self,root,eval_policy,depth=2):
         self.root = Node(state=root,parent=None)
         # Transposition Table which will have the following struct
         '''
@@ -48,29 +48,34 @@ class UBFMS(object):
         '''
         self.v = {}
 
+        self.eval_policy = eval_policy
+        self.depth = depth
+
     # Execute the UBFMS search from root node
-    def search(self,tho=100):
-       return self.ub_minimax(self.root,tho)
+    def search(self,state,tho=1):
+       node = Node(state=state,parent=None)
+       return self.ub_minimax(node,self.depth,tho)
     # unbounded minimax search starting from state #state
-    def ub_minimax(self,node,tho):
+    def ub_minimax(self,node,depth,tho):
         t = time()
 
-        while (time()- t < tho) :
-            value = self.ub_minimax_iter(node)
+        while (time()- t < tho) and (depth > 0) :
+            value = self.ub_minimax_iter(node,depth)
             #print(f'({value})')
 
 
 
+        '''
         a_b = self.best_action(node)
         node = node.do_action(a_b)
-
-        return self.best_action(node),node
+        '''
+        return self.best_action(node)
 
     # unbounded minimax search iteration on state #state
-    def ub_minimax_iter(self, node):
+    def ub_minimax_iter(self, node,depth):
 
-        if node.is_terminal :
-            return node.state.value()
+        if node.is_terminal or depth == 0:
+            return self.eval_policy(node.state)
         '''
         if node in self.T :
             return self.T[node]
@@ -90,7 +95,7 @@ class UBFMS(object):
                 child = node.do_action(a)
                 #print(f' Child #{i+1} : {child} ')
                 node.children.append(child)
-                self.v[a] = child.state.value()
+                self.v[a] =self.eval_policy(child.state)
                 node.undo_action()
                 #print(f'After : {self.v} ')
                 #print(node.make_action(a).state)
@@ -105,7 +110,7 @@ class UBFMS(object):
             #new_node = Node(node.state.make_action(a_b), node)
             node = node.do_action(a_b)
             #print(f'After {a_b} , {node.state.first_player()} : {node}')
-            self.v[a_b] = self.ub_minimax_iter(node)
+            self.v[a_b] = self.ub_minimax_iter(node,depth-1)
 
         a_b = self.best_action(node)
         return self.v[a_b]
@@ -118,14 +123,14 @@ class UBFMS(object):
         if node.state.first_player():
             #print(f' MAX : {self.v}')
             a = max(self.v, key=self.v.get)
-            node = node.do_action(a)
-            print(f' WHITE : {a}')
+            #node = node.do_action(a)
+            #print(f' WHITE : {a}')
             return a
         else:
             #print(f' MIN : {self.v}')
             a = min(self.v, key=self.v.get)
-            node = node.do_action(a)
-            print(f' BLACK :  {a}')
+            #node = node.do_action(a)
+            #print(f' BLACK :  {a}')
             return a
 
 

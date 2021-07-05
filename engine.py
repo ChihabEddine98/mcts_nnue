@@ -3,6 +3,7 @@ import chess.pgn
 import chess.engine
 from stockfish import Stockfish
 
+from src.alpha_beta_search import AlphaBeta
 from src.mcts import MCTS, custom_policy, nnue_policy
 from src.state import State
 from src.ubfms import UBFMS
@@ -23,8 +24,10 @@ if __name__ == '__main__':
     s = State()
     ubfm = UBFMS(s)
     mcts = MCTS(root=s,iteration_limit=50,rollout_policy=custom_policy)
+    alpha_beta = AlphaBeta(root=s,eval_policy=nnue_policy,depth=2)
 
-    print(ubfm.search())
+
+    print(alpha_beta())
 
 
 
