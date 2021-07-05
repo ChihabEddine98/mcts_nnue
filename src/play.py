@@ -20,6 +20,10 @@ def main():
     white = ChessPlayer(search_policy=ubfms)
     black = ChessPlayer(search_policy=ubfms)
 
+    # For now its self play ubfms
+    # TODO -----
+    #   Fix [ got e8h8 in 7q/8/5kpK/7p/7P/8/8/8 ]
+
     while True:
         w_action = white.play(state)
         state = state.do_action(w_action)
