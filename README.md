@@ -14,8 +14,8 @@ Monte-Carlo Tree Search & UBFM applied on NNUE (Stockfish Neural Net)
 - [ ] Implement MCTS search
 - [ ] Optimize DRL model 
 - [ ] Compare performances on Stoskfish v13
-- [ ] Try to implement this previous searches approachs in C++ (more optimization) 
-
+- [ ] Try to implement this previous searches approachs in C++ (more optimization)
+- [ ] Add Quiescience Search (AlphaBeta for test)
 
 # Training Value Neural Network 
 ## Loss function per epochs 
