@@ -18,7 +18,7 @@ def main():
 
     # Players
     white = ChessPlayer(search_policy=ubfms)
-    black = ChessPlayer(search_policy=ubfms)
+    black = ChessPlayer(search_policy=alpha_beta)
 
     # For now its self play ubfms
     # TODO -----
