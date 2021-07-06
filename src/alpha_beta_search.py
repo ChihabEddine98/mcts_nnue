@@ -14,11 +14,31 @@ class AlphaBeta(object):
         self.depth = depth
         self.root = root
         self.eval_policy = eval_policy
+        self.v_max , self.v_min = {},{}
 
     def search(self,state):
         return self.minimax_alpha_beta(state,self.depth)
 
+
     def minimax_alpha_beta(self,state,depth):
+        h_score , l_score = float('inf') , float('-inf')
+
+
+        if state.first_player():
+            best_score = self.max_value(state, depth, h_score, l_score)
+            best_action = self.best_action(state)
+            print(f' V_max : {self.v_max}')
+
+
+        else:
+            best_score = self.min_value(state, depth, h_score, l_score)
+            best_action = self.best_action(state)
+            print(f' V_min : {self.v_min}')
+
+        print(best_action)
+        return best_action
+
+    def minimax_alpha_beta2(self,state,depth):
 
         state_cpy = state
         actions = state_cpy.actions()
@@ -30,17 +50,30 @@ class AlphaBeta(object):
             if state_cpy.first_player():
                 best_score = self.max_value(state_cpy,depth,h_score,l_score)
             else:
+                print(f'#1 {state_cpy}')
                 best_score = self.min_value(state_cpy,depth,h_score,l_score)
+                print(f'#2 {action} :  {best_score} ,  {state_cpy} ')
 
-            if state_cpy.first_player() and best_score > h_score:
+            if state_cpy.first_player() or best_score >= h_score:
+                print('Yoooooo High ')
                 h_score = best_score
                 best_action = action
-            elif not(state_cpy.first_player()) and best_score < l_score:
+            else:
+                print('Yoooooo')
                 l_score = best_score
                 best_action = action
 
+
+
         print(f' Turn : {state_cpy.first_player()} , Action : {best_action}')
         return  best_action
+
+
+    def best_action(self,state):
+        if state.first_player():
+            return max(self.v_max, key=self.v_max.get)
+        else:
+            return min(self.v_min, key=self.v_min.get)
 
     def max_value(self,state,depth,alpha,beta):
 
@@ -52,9 +85,12 @@ class AlphaBeta(object):
         best_score = float('-inf')
 
         for action in actions:
+            print(f' MAX AVANT : {state_cpy} ')
             state_cpy.do_action(action)
+            print(f' MAX : {state_cpy} ')
             res_score = self.min_value(state_cpy,depth-1,alpha,beta)
             best_score = max(best_score,res_score)
+            self.v_max[action] = best_score
 
             if best_score >= beta :
                 return best_score
@@ -72,9 +108,12 @@ class AlphaBeta(object):
         best_score = float('inf')
 
         for action in actions:
+            print(f' MIN AVANT : {state_cpy} ')
             state_cpy.do_action(action)
+            print(f' MIN : {state_cpy} ')
             res_score = self.max_value(state_cpy,depth-1,alpha,beta)
             best_score = min(best_score,res_score)
+            self.v_min[action] = best_score
 
             if best_score <= alpha :
                 return best_score
