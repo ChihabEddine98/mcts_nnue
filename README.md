@@ -7,7 +7,8 @@ Monte-Carlo Tree Search & UBFM applied on NNUE (Stockfish Neural Net)
 - [x] Test NNUE evaluation
 - [x] Implement UBFM-Safe-Minimax : https://www.lamsade.dauphine.fr/~cazenave/papers/MinimaxStrikesBack.pdf
 - [x] Implement MCTS
-- [ ] Play UBFMS/NNUE vs AlphaBéta/NNUE 
+- [ ] Play UBFMS/NNUE vs AlphaBéta/NNUE
+- [ ] Change Value NN structure
 - [ ] Train Value NN with more games 
 - [ ] Quiscence Search
 - [ ] Optimize DRL model 
