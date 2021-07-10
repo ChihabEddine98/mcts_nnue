@@ -59,6 +59,7 @@ class AlphaBeta(object):
 
         return best_action
 
+    # To be changed !
     def minimax_alpha_beta2(self,state,depth):
 
         state_cpy = state
