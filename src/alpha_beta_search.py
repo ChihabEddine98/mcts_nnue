@@ -98,6 +98,7 @@ class AlphaBeta(object):
         else:
             return min(self.v_min, key=self.v_min.get)
 
+    # Use Negamax for alpha beta
     def max_value(self,state,depth,alpha,beta):
 
         if state.is_terminal() or depth == 0:
