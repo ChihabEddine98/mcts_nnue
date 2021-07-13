@@ -17,11 +17,29 @@ class AlphaBeta(object):
         self.v, self.v_max , self.v_min = {},{},{}
 
     def search(self,state):
-        return self.minimax_alpha_beta(state,self.depth)
+        return self.best_action(state,self.depth)
+
+    def best_action(self,state,depth):
+        actions = state.actions()
+        best_score = float('-inf')
+        best_action = None
+
+        for a in actions:
+            state = state.do_action(a)
+            value = max(best_score,self.minimax(state,depth-1,-1e4,1e4))
+            state = state.undo_action()
+            if value > best_score :
+                best_action = a
+                best_score = value
+
+        return best_action
+
+
+
 
     def minimax(self,state,depth,alpha,beta):
         if depth == 0 :
-            return  self.eval_policy(state)
+            return -self.eval_policy(state)
 
         actions = state.actions()
         if state.first_player():
