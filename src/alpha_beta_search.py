@@ -139,7 +139,7 @@ class AlphaBeta(object):
         return  best_action
 
 
-    def best_action(self,state):
+    def best_action2(self,state):
         print(f'MAX  : {self.v_max} \nMIN :  {self.v_min}')
         if state.first_player():
             return max(self.v_max, key=self.v_max.get)

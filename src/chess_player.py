@@ -10,5 +10,4 @@ class ChessPlayer(object):
         self.search = search_policy
 
     def play(self,state):
-        action = self.search.search(state)
-        return action
+        return self.search.search(state)
