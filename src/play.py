@@ -25,6 +25,9 @@ def main():
     #   Fix [ got e8h8 in 7q/8/5kpK/7p/7P/8/8/8 ]
 
     while True:
+
+        # TODO ------
+        #  Fix : check if action is None (won in case or draw)
         w_action = white.play(state)
         state = state.do_action(w_action)
         print(f' White : {w_action} \n {state}')
