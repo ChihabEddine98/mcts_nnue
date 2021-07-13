@@ -39,7 +39,7 @@ class State(object):
             return sf.get_evaluation()['value']
         # In case we have mate visible
         else:
-            return np.sign(sf.get_evaluation()['value'])*float('inf')
+            return np.sign(sf.get_evaluation()['value'])*1e6
 
     def value_nn(self):
         v = Valuator()

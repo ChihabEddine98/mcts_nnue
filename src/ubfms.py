@@ -7,7 +7,6 @@ class Node(object):
     def __init__(self,state,parent):
         self.state = state
         self.parent = parent
-        self.is_terminal = state.is_terminal()
         self.children = []
 
     def __repr__(self):
@@ -61,6 +60,8 @@ class UBFMS(object):
 
         while (time()- t < tho) and (depth > 0) :
             value = self.ub_minimax_iter(node,depth)
+            if value == 1e6 :
+                return None
             #print(f'({value})')
 
 
@@ -74,20 +75,15 @@ class UBFMS(object):
     # unbounded minimax search iteration on state #state
     def ub_minimax_iter(self, node,depth):
 
-        if node.is_terminal or depth == 0:
-            return self.eval_policy(node.state)
-        '''
-        if node in self.T :
-            return self.T[node]
-        '''
+        if node.state.is_terminal() :
+            return 1e6
 
-        '''
-        print(f' Node : \n {node}')
-        print(f' T: {self.T}')
-        '''
+        if depth == 0:
+            return self.eval_policy(node.state)
+        self.v = {}
+
         if repr(node) not in self.T:
             self.T.append(node)
-            self.v = {}
 
             for i,a in enumerate(node.state.actions()):
                 #print(f'Before : ')
@@ -120,6 +116,8 @@ class UBFMS(object):
     #       Delete the old version of self.v ( values function )
     # Get the best available action from current state #state for the current player (white,black)
     def best_action(self, node):
+        player = 'White' if node.state.first_player() else 'Black'
+        print(f' Player : {player} , v = {self.v}')
         if node.state.first_player():
             #print(f' MAX : {self.v}')
             a = max(self.v, key=self.v.get)
