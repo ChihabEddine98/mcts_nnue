@@ -19,6 +19,36 @@ class AlphaBeta(object):
     def search(self,state):
         return self.minimax_alpha_beta(state,self.depth)
 
+    def minimax(self,state,depth,alpha,beta):
+        if depth == 0 :
+            return  self.eval_policy(state)
+
+        actions = state.actions()
+        if state.first_player():
+            best_score = float('-inf')
+            for a in actions:
+                state = state.do_action(a)
+                best_score = max(best_score,self.minimax(state,depth-1,alpha,beta))
+                state = state.undo_action()
+                alpha = max(alpha,best_score)
+                if beta <= alpha :
+                    return best_score
+            return best_score
+
+        else:
+            best_score = float('inf')
+            for a in actions:
+                state = state.do_action(a)
+                best_score = min(best_score, self.minimax(state, depth - 1, alpha, beta))
+                state = state.undo_action()
+                beta = min(beta, best_score)
+                if beta <= alpha:
+                    return best_score
+            return best_score
+
+
+
+
     def quiescence(self,state,alpha,beta):
         stand_pat = self.eval_policy(state)
 
