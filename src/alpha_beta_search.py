@@ -26,11 +26,11 @@ class AlphaBeta(object):
 
         for a in actions:
             state = state.do_action(a)
-            value = max(best_score,self.negamax(state,depth-1,-1e4,1e4))
+            score = max(best_score,self.negamax(state,depth-1,-1e4,1e4))
             state = state.undo_action()
-            if value > best_score :
+            if score > best_score :
                 best_action = a
-                best_score = value
+                best_score = score
 
         return best_action
 
