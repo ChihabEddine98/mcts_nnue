@@ -17,23 +17,24 @@ def main():
     ubfms = UBFMS(root=state,eval_policy=nnue_policy,depth=2)
 
     # Players
-    white = ChessPlayer(search_policy=ubfms)
-    black = ChessPlayer(search_policy=alpha_beta)
+    player1 = ChessPlayer(search_policy=ubfms)
+    player2 = ChessPlayer(search_policy=alpha_beta)
 
     # For now its self play ubfms
     # TODO -----
     #   Fix [ got e8h8 in 7q/8/5kpK/7p/7P/8/8/8 ]
+    players = [player1,player2]
 
     while True:
 
         # TODO ------
         #  Fix : check if action is None (won in case or draw)
-        w_action = white.play(state)
+        w_action = player1.play(state)
         state = state.do_action(w_action)
-        print(f' White : {w_action} \n {state}')
-        b_action = black.play(state)
+        print(f' Player1 : {w_action} \n {state}')
+        b_action = player2.play(state)
         state = state.do_action(b_action)
-        print(f' Black : {b_action} \n {state}')
+        print(f' Player2 : {b_action} \n {state}')
 
 
 
