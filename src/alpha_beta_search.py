@@ -6,7 +6,7 @@
 
 # In this Class we have an implmenatation for the Alpha-Beta Alogrithm
 # Using the Negamax Framework to avoid writing the same code for max and
-# min cases separatly
+# min cases separately
 
 class AlphaBeta(object):
 
@@ -97,7 +97,7 @@ class AlphaBeta(object):
 
         for action in state.actions():
             state.do_action(action)
-            score = -self.minimax_a_b(state, -beta, -alpha)
+            score = -self.negamax(state, -beta, -alpha)
             self.v[action] = score
             state.undo_action()
 

@@ -24,17 +24,43 @@ def main():
     # TODO -----
     #   Fix [ got e8h8 in 7q/8/5kpK/7p/7P/8/8/8 ]
     players = [player1,player2]
+    results = []
+    nb_games = 2
 
-    while True:
+    for i in range(nb_games):
+        print(f'\n---------------------- Start of Match {i + 1} ------------------------')
+        while not state.is_terminal():
 
-        # TODO ------
-        #  Fix : check if action is None (won in case or draw)
-        w_action = player1.play(state)
-        state = state.do_action(w_action)
-        print(f' Player1 : {w_action} \n {state}')
-        b_action = player2.play(state)
-        state = state.do_action(b_action)
-        print(f' Player2 : {b_action} \n {state}')
+            # We will play half games in black for each search approach
+            if i <= nb_games // 2:
+                w_player, b_player = players[0] , players[1]
+            else:
+                w_player, b_player = players[1] , players[0]
+
+            w_action = w_player.play(state)
+            if w_action is None:
+                break
+
+            state = state.do_action(w_action)
+            print(f' Player1 (White) : {w_action} \n {state}')
+            b_action = b_player.play(state)
+            if w_action is None:
+                break
+
+            state = state.do_action(b_action)
+            print(f' Player2 (Black) : {b_action} \n {state}')
+
+            if state.is_terminal():
+                results.append(state.board.outcome().result())
+                print(f'\n---------------------- END of Match {i+1} ------------------------')
+                print(f'    Score : {state.board.outcome().result()}')
+                print(f'\n------------------------------------------------------------------')
+
+    with open('results.txt', 'w') as f:
+        for result in results:
+            f.write("%s\n" % result)
+
+
 
 
 

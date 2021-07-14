@@ -20,14 +20,14 @@ if __name__ == '__main__':
     #print(state.evaluation())
 
     c = 'r1bqk2r/pppp1ppp/2n5/1Bb1p3/8/1PN2N2/PBPP1PPP/R2Q1RK1 b kq - 0 7'
-    board = chess.Board('1rbq1rk1/p1N2p1p/2pp2p1/8/3P2Q1/1P6/PBP2KPP/R3R3 b - - 0 1')
-    s = State()
-    ubfm = UBFMS(s)
-    mcts = MCTS(root=s,iteration_limit=50,rollout_policy=custom_policy)
-    alpha_beta = AlphaBeta(root=s,eval_policy=nnue_policy,depth=2)
+    board = chess.Board('1r2Rrk1/p1N2p1p/2pp2pK/7q/3P2b1/1P4P1/PBP5/R7 w - - 8 8')
+    s = State(board)
+    print(s)
+    #ubfm = UBFMS(s)
+    #mcts = MCTS(root=s,iteration_limit=50,rollout_policy=custom_policy)
+    #alpha_beta = AlphaBeta(root=s,eval_policy=nnue_policy,depth=2)
 
-
-    print(alpha_beta())
+    print(s.board.outcome().result())
 
 
 
