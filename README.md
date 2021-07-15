@@ -1,5 +1,5 @@
 # mcts_nnue
-Monte-Carlo Tree Search & UBFM applied on NNUE (Stockfish Neural Net) 
+Monte-Carlo Tree Search & UBFMS applied on NNUE (Stockfish Neural Net) 
 
 # TODO
 - [x] Test Chess-python library for representation
@@ -9,6 +9,7 @@ Monte-Carlo Tree Search & UBFM applied on NNUE (Stockfish Neural Net)
 - [x] Implement MCTS
 - [x] UBFMS vs UBFMS quiescence search (in progress)
 - [ ] Play UBFMS/NNUE vs AlphaBéta/NNUE
+- [ ] C++ version
 - [ ] Change Value NN structure
 - [ ] Train Value NN with more games 
 - [ ] Quiscence Search
