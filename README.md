@@ -22,4 +22,4 @@ Monte-Carlo Tree Search & UBFMS applied on NNUE (Stockfish Neural Net)
 
 # Training Value Neural Network 
 ## Loss function per epochs 
-![img.png](models/img.png)
+![img.png](models/img.png) , C++
