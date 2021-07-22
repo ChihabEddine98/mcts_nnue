@@ -116,8 +116,6 @@ class UBFMS(object):
     #       Delete the old version of self.v ( values function )
     # Get the best available action from current state #state for the current player (white,black)
     def best_action(self, node):
-        player = 'White' if node.state.first_player() else 'Black'
-        print(f' Player : {player} , v = {self.v}')
         if node.state.first_player():
             #print(f' MAX : {self.v}')
             a = max(self.v, key=self.v.get)
