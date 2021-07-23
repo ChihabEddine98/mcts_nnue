@@ -117,16 +117,8 @@ class UBFMS(object):
     # Get the best available action from current state #state for the current player (white,black)
     def best_action(self, node):
         if node.state.first_player():
-            #print(f' MAX : {self.v}')
-            a = max(self.v, key=self.v.get)
-            #node = node.do_action(a)
-            #print(f' WHITE : {a}')
-            return a
+            return max(self.v, key=self.v.get)
         else:
-            #print(f' MIN : {self.v}')
-            a = min(self.v, key=self.v.get)
-            #node = node.do_action(a)
-            #print(f' BLACK :  {a}')
-            return a
+            return min(self.v, key=self.v.get)
 
 
