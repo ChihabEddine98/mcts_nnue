@@ -1,5 +1,5 @@
-# mcts_nnue
-Monte-Carlo Tree Search & UBFMS applied on NNUE (Stockfish Neural Net) 
+# NNUE-Unbounded Minimax Searches
+Unbounded Minimax , Alpha-Beta and Monte-Carlo Tree Search & UBFMS applied on NNUE (Stockfish Neural Net) 
 
 # TODO
 - [x] Test Chess-python library for representation
