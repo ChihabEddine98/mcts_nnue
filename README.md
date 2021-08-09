@@ -1,4 +1,4 @@
-# NNUE-Unbounded Minimax Searches
+# NNUE-With Unbounded Minimax Searches (UBFMS)
 Unbounded Minimax , Alpha-Beta and Monte-Carlo Tree Search & UBFMS applied on NNUE (Stockfish Neural Net) 
 
 # TODO
