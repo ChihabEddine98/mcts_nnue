@@ -20,6 +20,8 @@ Unbounded Minimax , Alpha-Beta and Monte-Carlo Tree Search & UBFMS applied on NN
 - [ ] Try to implement this previous searches approachs in C++ (more optimization)
 - [ ] Add Quiescience Search (AlphaBeta for test)
 
+UBFMS v function with pai-key (fen,move) (C++ done)
+
 # Training Value Neural Network 
 ## Loss function per epochs 
 ![img.png](models/img.png) , C++ (UBFMS)
