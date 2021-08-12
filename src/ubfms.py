@@ -24,7 +24,7 @@ class Node(object):
 
 
 class UBFMS(object):
-    def __init__(self,root,eval_policy,depth=2):
+    def __init__(self,root,eval_policy):
         self.root = Node(state=root,parent=None)
         # Transposition Table which will have the following struct
         '''
@@ -48,18 +48,18 @@ class UBFMS(object):
         self.v = {}
 
         self.eval_policy = eval_policy
-        self.depth = depth
+
 
     # Execute the UBFMS search from root node
     def search(self,state,tho=1):
        node = Node(state=state,parent=None)
-       return self.ub_minimax(node,self.depth,tho)
+       return self.ub_minimax(node,tho)
     # unbounded minimax search starting from state #state
-    def ub_minimax(self,node,depth,tho):
+    def ub_minimax(self,node,tho):
         t = time()
 
-        while (time()- t < tho) and (depth > 0) :
-            value = self.ub_minimax_iter(node,depth)
+        while (time()- t < tho)  :
+            value = self.ub_minimax_iter(node)
             if value == 1e6 :
                 return None
             #print(f'({value})')
@@ -73,12 +73,12 @@ class UBFMS(object):
         return self.best_action(node)
 
     # unbounded minimax search iteration on state #state
-    def ub_minimax_iter(self, node,depth):
+    def ub_minimax_iter(self, node):
 
         if node.state.is_terminal() :
             return 1e6
 
-        if depth == 0:
+        if node.state.is_terminal():
             return self.eval_policy(node.state)
         self.v = {}
 

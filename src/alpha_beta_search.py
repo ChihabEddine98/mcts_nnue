@@ -38,7 +38,7 @@ class AlphaBeta(object):
 
     def negamax(self,state,depth,alpha,beta):
         if depth == 0  or state.is_terminal():
-            return -self.eval_policy(state)
+            return self.eval_policy(state) if state.first_player() else -self.eval_policy(state)
 
         actions = state.actions()
         best_score = float('-inf')
@@ -57,8 +57,8 @@ class AlphaBeta(object):
         return alpha
 
     def minimax_alpha_beta(self,state,depth,alpha,beta):
-        if depth == 0 :
-            return -self.eval_policy(state)
+        if depth == 0 or state.is_terminal():
+            return self.eval_policy(state) if state.first_player() else -self.eval_policy(state)
 
         actions = state.actions()
         if state.first_player():

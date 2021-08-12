@@ -19,8 +19,8 @@ def main():
         state = State()
 
         # Searches Methods to compare
-        alpha_beta = AlphaBeta(root=state, eval_policy=nnue_policy, depth=2)
-        ubfms = UBFMS(root=state, eval_policy=nnue_policy, depth=5)
+        alpha_beta = AlphaBeta(root=state, eval_policy=nnue_policy, depth=1)
+        ubfms = UBFMS(root=state, eval_policy=nnue_policy)
 
         # Players
         player1 = ChessPlayer(search_policy=ubfms)
