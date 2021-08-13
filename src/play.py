@@ -1,3 +1,8 @@
+import os
+import csv
+
+import chess
+
 from src.chess_player import ChessPlayer
 from src.state import State
 from src.alpha_beta_search import AlphaBeta
@@ -11,12 +16,19 @@ def nnue_policy(state):
 def main():
 
     results = []
-    nb_games = 11
 
-    for i in range(nb_games):
+    with open(os.path.join('..','data','opennings.csv'),'r') as op:
+        reader = csv.reader(op)
+        fens = [row[1] for row in reader]
+
+
+    for i in range(len(fens)):
+
+        # Initial Game Board
+        board = chess.Board(fens[i])
 
         # Initial State
-        state = State()
+        state = State(board)
 
         # Searches Methods to compare
         alpha_beta = AlphaBeta(root=state, eval_policy=nnue_policy, depth=1)
