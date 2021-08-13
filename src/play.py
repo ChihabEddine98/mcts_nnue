@@ -23,19 +23,13 @@ def main():
         ubfms = UBFMS(root=state, eval_policy=nnue_policy)
 
         # Players
-        player1 = ChessPlayer(search_policy=ubfms)
-        player2 = ChessPlayer(search_policy=alpha_beta)
+        player1 = ChessPlayer(search_policy=alpha_beta)
+        player2 = ChessPlayer(search_policy=ubfms)
         players = [player1, player2]
 
         print(f'\n---------------------- Start of Match {i + 1} ------------------------')
         while not state.is_terminal():
-
-            # We will play half games in black for each search approach
-            if i % 2 == 0:
-                w_player, b_player = players[0] , players[1]
-            else:
-                w_player, b_player = players[1] , players[0]
-
+            w_player, b_player = players[0] , players[1]
             w_action = w_player.play(state)
             if w_action is None:
                 break

@@ -75,11 +75,9 @@ class UBFMS(object):
     # unbounded minimax search iteration on state #state
     def ub_minimax_iter(self, node):
 
-        if node.state.is_terminal() :
-            return 1e6
-
         if node.state.is_terminal():
-            return self.eval_policy(node.state)
+            return self.eval_policy(node.state) if node.state.first_player() else -self.eval_policy(node.state)
+
         self.v = {}
 
         if repr(node) not in self.T:
@@ -88,11 +86,14 @@ class UBFMS(object):
             for i,a in enumerate(node.state.actions()):
                 #print(f'Before : ')
                 #print(node.state)
+                fen = repr(node)
+
                 child = node.do_action(a)
                 #print(f' Child #{i+1} : {child} ')
                 node.children.append(child)
-                self.v[a] =self.eval_policy(child.state)
-                node.undo_action()
+                self.v[(fen,a)] = self.eval_policy(node.state) if child.state.first_player() else -self.eval_policy(child.state)
+                node = node.undo_action()
+
                 #print(f'After : {self.v} ')
                 #print(node.make_action(a).state)
 
@@ -104,21 +105,33 @@ class UBFMS(object):
             a_b = self.best_action(node)
             #print(f' Heree #2 : {node}')
             #new_node = Node(node.state.make_action(a_b), node)
+            bkp_node = node
             node = node.do_action(a_b)
             #print(f'After {a_b} , {node.state.first_player()} : {node}')
-            self.v[a_b] = self.ub_minimax_iter(node,depth-1)
+            self.v[(repr(bkp_node),a_b)] = self.ub_minimax_iter(node)
+            node = node.undo_action()
 
         a_b = self.best_action(node)
-        return self.v[a_b]
+        return self.v[(repr(node),a_b)]
+
+    def get_action_value_by_fen(self,fen):
+        result = {}
+        for (state,action),value in self.v.items():
+            if state == fen :
+                result[action] = value
+        return result
+
+
     # TODO SOS ----- wrong push action for BLACK (f1d3)
     #        Verify self.v dict if there is doubles
     #        it can be the issue
     #       Delete the old version of self.v ( values function )
     # Get the best available action from current state #state for the current player (white,black)
     def best_action(self, node):
+        result = self.get_action_value_by_fen(repr(node))
         if node.state.first_player():
-            return max(self.v, key=self.v.get)
+            return max(result, key=result.get)
         else:
-            return min(self.v, key=self.v.get)
+            return min(result, key=result.get)
 
 

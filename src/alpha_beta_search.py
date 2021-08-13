@@ -1,4 +1,4 @@
-
+from time import time
 
 
 
@@ -11,13 +11,14 @@
 class AlphaBeta(object):
 
     def __init__(self,root,eval_policy,depth=2):
-        self.depth = depth
+        self.max_depth = depth
+        self.node_expanded = 0
         self.root = root
         self.eval_policy = eval_policy
         self.v, self.v_max , self.v_min = {},{},{}
 
     def search(self,state):
-        return self.best_action(state,self.depth)
+        return self.choose_action(state)
 
     def best_action(self,state,depth):
         actions = state.actions()
@@ -26,7 +27,7 @@ class AlphaBeta(object):
 
         for a in actions:
             state = state.do_action(a)
-            score = max(best_score,self.negamax(state,depth-1,-1e4,1e4))
+            score = max(best_score,self.minimax_alpha_beta(state,depth-1,-1e4,1e4))
             state = state.undo_action()
             if score > best_score :
                 best_action = a
@@ -34,7 +35,50 @@ class AlphaBeta(object):
 
         return best_action
 
+    def choose_action(self, state):
+        self.node_expanded = 0
 
+        start_time = time()
+
+        print("MINIMAX AB : Wait AI is choosing")
+        list_action = state.actions()
+        eval_score, selected_key_action = self._minimax(0, state, True, float('-inf'), float('inf'))
+        print("MINIMAX : Done, eval = %d, expanded %d" % (eval_score, self.node_expanded))
+        print("--- %s seconds ---" % (time() - start_time))
+        print("--- %s Best :  ---" % (selected_key_action))
+
+        return selected_key_action
+
+    def _minimax(self, current_depth, state, is_max_turn, alpha, beta):
+
+        if current_depth == self.max_depth or state.is_terminal():
+            return self.eval_policy(state), ""
+
+        self.node_expanded += 1
+
+        key_of_actions = state.actions()
+
+        best_value = float('-inf') if is_max_turn else float('inf')
+        action_target = ""
+        for action_key in key_of_actions:
+            new_state = state.do_action(action_key)
+            eval_child, action_child = self._minimax(current_depth + 1, new_state, not is_max_turn, alpha, beta)
+            state.undo_action()
+            if is_max_turn and best_value < eval_child:
+                best_value = eval_child
+                action_target = action_key
+                alpha = max(alpha, best_value)
+                if beta <= alpha:
+                    break
+
+            elif (not is_max_turn) and best_value > eval_child:
+                best_value = eval_child
+                action_target = action_key
+                beta = min(beta, best_value)
+                if beta <= alpha:
+                    break
+
+        return best_value, action_target
 
     def negamax(self,state,depth,alpha,beta):
         if depth == 0  or state.is_terminal():
