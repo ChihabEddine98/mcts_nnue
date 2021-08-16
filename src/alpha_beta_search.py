@@ -63,7 +63,7 @@ class AlphaBeta(object):
         for action_key in key_of_actions:
             new_state = state.do_action(action_key)
             eval_child, action_child = self._minimax(current_depth + 1, new_state, not is_max_turn, alpha, beta)
-            state.undo_action()
+            state = state.undo_action()
             if is_max_turn and best_value < eval_child:
                 best_value = eval_child
                 action_target = action_key

@@ -36,10 +36,10 @@ class State(object):
         sf.set_fen_position(self.board.fen())
         # If there is no visible mate yet !
         if sf.get_evaluation()['type'] == "cp":
-            return sf.get_evaluation()['value']
+            return sf.get_evaluation()['value'] if self.first_player() else  -sf.get_evaluation()['value']
         # In case we have mate visible
         else:
-            return np.sign(sf.get_evaluation()['value'])*1e6
+            return sf.get_evaluation()['value']*1e6 if self.first_player() else  -sf.get_evaluation()['value']*1e6
 
     def value_nn(self):
         v = Valuator()

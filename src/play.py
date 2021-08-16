@@ -7,6 +7,7 @@ from src.chess_player import ChessPlayer
 from src.state import State
 from src.alpha_beta_search import AlphaBeta
 from src.ubfms import UBFMS
+from src.config import WARNING,ENDC
 
 
 # Evaluation Policy using Stockfish's NNUE algorithm
@@ -31,7 +32,7 @@ def main():
         state = State(board)
 
         # Searches Methods to compare
-        alpha_beta = AlphaBeta(root=state, eval_policy=nnue_policy, depth=1)
+        alpha_beta = AlphaBeta(root=state, eval_policy=nnue_policy, depth=2)
         ubfms = UBFMS(root=state, eval_policy=nnue_policy)
 
         # Players
@@ -39,7 +40,9 @@ def main():
         player2 = ChessPlayer(search_policy=ubfms)
         players = [player1, player2]
 
-        print(f'\n---------------------- Start of Match {i + 1} ------------------------')
+
+
+        print(f'{WARNING}\n---------------------- Start of Match {i + 1} ------------------------ {ENDC}')
         while not state.is_terminal():
             w_player, b_player = players[0] , players[1]
             w_action = w_player.play(state)
@@ -57,7 +60,7 @@ def main():
 
             if state.is_terminal():
                 results.append(state.board.outcome().result())
-                print(f'\n---------------------- END of Match {i+1} ------------------------')
+                print(f'{WARNING} \n---------------------- END of Match {i+1} ------------------------ {ENDC}')
                 print(f'    Score : {state.board.outcome().result()}')
                 print(f'\n------------------------------------------------------------------')
 
