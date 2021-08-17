@@ -64,6 +64,7 @@ def main():
                 print(f'    Score : {state.board.outcome().result()}')
                 print(f'\n------------------------------------------------------------------')
 
+    # Try to play max games before saving results
     with open('results.txt', 'w') as f:
         for result in results:
             f.write("%s\n" % result)
