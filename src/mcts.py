@@ -59,7 +59,7 @@ class MCTS(object):
         self.root = Node(root, None)
 
 
-    def search(self):
+    def search(self,state):
 
         if self.limit_type == 'time':
             time_limit = time() + self.time_limit / 1000
@@ -70,7 +70,8 @@ class MCTS(object):
                 self.mcts_iter()
 
         best_child = self.best_action(self.root, 0)
-        return self.get_action(self.root, best_child), -self.rollout(best_child.state)
+        #return self.get_action(self.root, best_child), -self.rollout(best_child.state)
+        return self.get_action(self.root, best_child)
 
     def mcts_iter(self):
         node = self.select(self.root)

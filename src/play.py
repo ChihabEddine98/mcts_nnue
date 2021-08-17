@@ -7,6 +7,7 @@ from src.chess_player import ChessPlayer
 from src.state import State
 from src.alpha_beta_search import AlphaBeta
 from src.ubfms import UBFMS
+from src.mcts import MCTS
 from src.config import WARNING,ENDC
 
 
@@ -33,10 +34,12 @@ def main():
 
         # Searches Methods to compare
         alpha_beta = AlphaBeta(root=state, eval_policy=nnue_policy, depth=2)
+        mcts = MCTS(root=state,iteration_limit=50,rollout_policy=nnue_policy)
         ubfms = UBFMS(root=state, eval_policy=nnue_policy)
 
         # Players
         player1 = ChessPlayer(search_policy=alpha_beta)
+        player1 = ChessPlayer(search_policy=mcts)
         player2 = ChessPlayer(search_policy=ubfms)
         players = [player1, player2]
 
@@ -46,6 +49,7 @@ def main():
         while not state.is_terminal():
             w_player, b_player = players[0] , players[1]
             w_action = w_player.play(state)
+            print(f'Yooooo : {w_action}')
             if w_action is None:
                 break
 
