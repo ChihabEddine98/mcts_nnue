@@ -1,7 +1,11 @@
 import os
 import torch
-
+import chess
+from torchviz import make_dot
+from torchsummary import summary
 from src.value_net_train import Net
+
+import hiddenlayer as hl
 
 
 
@@ -9,7 +13,7 @@ from src.value_net_train import Net
 
 class Valuator(object):
     def __init__(self):
-        vals = torch.load(os.path.join(os.getcwd(),'models','value.pth'),
+        vals = torch.load(os.path.join(os.getcwd(),'..','models','value.pth'),
                           map_location=lambda storage,
                           loc: storage)
         self.model = Net()
@@ -20,10 +24,13 @@ class Valuator(object):
         output = self.model(torch.tensor(ser).float())
         return float(output.data[0][0])
 
-'''
+
 if __name__ == '__main__':
     v = Valuator()
 
+    summary(v.model,(5,16,16))
+
+    '''
     board = chess.Board('1rbq1rk1/p1N2p1p/2pp2p1/8/3P2Q1/1P6/PBP2KPP/R3R3 b - -')
     s = State(board)
     print(f' Current State \n {s}')
