@@ -24,10 +24,7 @@ Release
 - [ ] Add Quiescience Search (AlphaBeta for test)
 
 UBFMS v function with pai-key (fen,move) (C++ done)
-<<<<<<< HEAD
-=======
 
->>>>>>> d4268bb9e75bb8b4d441e1333307be15d86e7f48
 # Training Value Neural Network 
 ## Loss function per epochs 
 ![img.png](models/img.png) , C++ (UBFMS)
